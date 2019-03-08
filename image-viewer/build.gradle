@@ -1,0 +1,83 @@
+apply plugin: 'com.android.library'
+
+def compileSdk = versions.compileSdk
+def minSdk = versions.minSdk
+def targetSdk = versions.targetSdk
+def buildTools = versions.buildTools
+def verCode = 17
+def verName = "2.1.3"
+
+android {
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
+
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode verCode
+        versionName verName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation deps.support.compatV7
+}
+
+
+apply plugin: 'com.novoda.bintray-release'
+
+def bintrayName = "albertlii"
+def bintrayRepoName = "android-maven"
+def bintrayGroupId = "com.liyi.view"
+def bintrayArtifactId = "image-viewer"
+def bintrayDesc = "This is a library for image browsing."
+def bintrayWebSite = "https://github.com/albert-lii/ImageViewer"
+def bintrayLicences = ['Apache-2.0']
+
+publish {
+    userOrg = bintrayName
+    repoName = bintrayRepoName
+    groupId = bintrayGroupId
+    artifactId = bintrayArtifactId
+    publishVersion = verName
+    desc = bintrayDesc
+    website = bintrayWebSite
+    licences = bintrayLicences
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
