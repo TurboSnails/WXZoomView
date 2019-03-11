@@ -1,7 +1,5 @@
 <h1>WXZoomView</h1>
 
-![releasesvg] ![apisvg] [![license][licensesvg]][license]
-
 <h2>关于</h2>
 
 类似微信图片放大页的进出动画、图片预览支持图片手势缩放、拖拽等操作，基于ImageViewer微修改，修复了一处崩溃，一处体验
@@ -104,7 +102,7 @@
    // 开启图片浏览
    imageViewer.watch();
 ```
-<h2 id="5">超巨图解决方案（进退场动画需重写，且不支持微信朋友圈拖拽，今日头条效果仍然支持）</h2>
+<h2 id="4">超巨图解决方案（进退场动画需重写，且不支持微信朋友圈拖拽，今日头条效果仍然支持）</h2>
 
 1. 使用 [SubsamplingScaleImageView](SubsamplingScaleImageView) 代替 PhotoView（推荐）
 2. 或者使用 [BigImageView](BigImageView) 代替 ScaleImageView
